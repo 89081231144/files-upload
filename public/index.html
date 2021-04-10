@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
+    <title>Hello, world!</title>
+  </head>
+  <body>
+  <main id="app" class="container">
+	  <section class="row mt-5">
+		<form class="col-md-8 mx-auto">
+			<div class="input-group">
+				<button class="btn btn-outline-secondary" type="button" id="button-addon1" @click="onPickFile">Выберите {{uploadBtnText}}</button>
+				<input type="text" ref="fileInput" class="form-control" :value="filesNamesToStr" placeholder="" aria-label="" disabled>
+				<input type="file" ref="fileInput" :style="{display: 'none'}" @change="addFile" :multiple="!singleFile">
+				<button class="btn btn-outline-secondary" :class="singleFile ? 'active' : {}" type="button" @click="uploadMode = 'one'">Один файл</button>
+				<button class="btn btn-outline-secondary" :class="!singleFile ? 'active' : {}" type="button" @click="uploadMode = 'some'">Несколько файлов</button>
+			</div>
+			<div class="d-grid gap-2 mt-1" >
+				<button class="btn btn-info" type="button" @click="upload()" :disabled="uploadCompleted||!files.length">Загрузить добавленные файлы на сервер</button>
+			</div>
+
+
+		</form>
+	  </section>
+		<section class="row mt-5" v-if="files.length">
+			<ul class="list-group col-md-8 mx-auto">
+			  <li v-for="({ name }, index) in files" :key="index" class="list-group-item d-flex justify-content-between align-items-start">
+				  <div class="ms-2 me-auto">
+						<span v-if="!uploadCompleted">{{name}}</span>
+						<a v-else :href="fileHref(name)">{{name}}</a>
+					</div>
+				  <button v-if="!uploadCompleted" type="button" class="btn" @click="removeFile(index)"><i class="bi bi-x-square-fill"></i></button>
+					<i v-else class="bi bi-check2">Загружен</i>
+				</li>
+			</ul>
+		</section>
+  </main>
+	<script src="src/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+  </body>
+</html>
